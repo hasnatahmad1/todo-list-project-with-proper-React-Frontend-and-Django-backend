@@ -1,7 +1,48 @@
+import axios from 'axios';
 import { Link } from 'react-router';
 import './LoginPage.css'
+import { useState } from 'react';
 
 export function LoginPage() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const toggleEmailText = (event) => {
+        setEmail(event.target.value);
+    };
+
+    const togglePasswordText = (event) => {
+        setPassword(event.target.value);
+    };
+
+    const toggleLoginButton = async () => {
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/token/', {
+                email: email,
+                password: password,
+            }, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            if (response.data.access) {
+                localStorage.setItem("access_token", response.data.access);
+                localStorage.setItem("refresh_token", response.data.refresh);
+                localStorage.setItem("user_email", JSON.stringify(email));
+                console.log(localStorage.getItem("user_email"));
+
+                alert("Login Successful ✅");
+                console.log("access_token:", response.data.access);
+            } else {
+                alert("Invalid credentials ❌");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Login failed ❌");
+        }
+    }
+
+
     return (
         <>
             <title>Login Page</title>
@@ -9,12 +50,23 @@ export function LoginPage() {
 
             <h2>Log In</h2>
             <p>Email</p>
-            <input className="js-email" type="email" />
+            <input
+                className="js-email"
+                type="email"
+                onChange={toggleEmailText}
+            />
 
             <p>Password</p>
-            <input className="js-password" type="text" /><br /><br />
+            <input
+                className="js-password"
+                type="text"
+                onChange={togglePasswordText}
+            /><br /><br />
 
-            <button className="js-login-button">
+            <button
+                className="js-login-button"
+                onClick={toggleLoginButton}
+            >
                 Login
             </button>
 
