@@ -1,11 +1,13 @@
 import axios from 'axios';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import './LoginPage.css'
 import { useState } from 'react';
 
 export function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigateToHomePage = useNavigate();
 
     const toggleEmailText = (event) => {
         setEmail(event.target.value);
@@ -33,6 +35,7 @@ export function LoginPage() {
 
                 alert("Login Successful ✅");
                 console.log("access_token:", response.data.access);
+                navigateToHomePage('/home');
             } else {
                 alert("Invalid credentials ❌");
             }
