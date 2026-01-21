@@ -6,9 +6,8 @@ export function LoginPage() {
         <>
             <title>Login Page</title>
 
-            <p>
-                <h2>Log In</h2>
-            </p>
+
+            <h2>Log In</h2>
             <p>Email</p>
             <input className="js-email" type="email" />
 
@@ -19,7 +18,7 @@ export function LoginPage() {
                 Login
             </button>
 
-            <p>Dont have an account <Link to="/register">Create Account</Link></p>
+            <p>Don&apos;t have an account <Link to="/register">Create Account</Link></p>
         </>
     );
 }
