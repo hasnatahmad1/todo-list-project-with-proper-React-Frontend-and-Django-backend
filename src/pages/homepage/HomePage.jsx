@@ -6,6 +6,20 @@ import './HomePage.css'
 export function HomePage() {
     const [notesList, setNotesList] = useState([]);
 
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [status, setStatus] = useState('Pending');
+    const [priority, setPriority] = useState('Low');
+
+    const [isEditModal, setIsEditModel] = useState(false);
+    const [isModalOverlay, setIsModalOverlay] = useState(false);
+
+    const [editId, setEditId] = useState(null);
+    const [editTitle, setEditTitle] = useState('');
+    const [editDescription, setEditDescription] = useState('');
+    const [editStatus, setEditStatus] = useState('');
+    const [editPriority, setEditPriority] = useState('');
+
     const token = localStorage.getItem("access_token");
     console.log(localStorage.getItem("access_token"));
     const userEmail = JSON.parse(localStorage.getItem("user_email"));
@@ -57,14 +71,7 @@ export function HomePage() {
         fetchNotesList();
     };
 
-    const [isEditModal, setIsEditModel] = useState(false);
-    const [isModalOverlay, setIsModalOverlay] = useState(false);
 
-    const [editId, setEditId] = useState(null);
-    const [editTitle, setEditTitle] = useState('');
-    const [editDescription, setEditDescription] = useState('');
-    const [editStatus, setEditStatus] = useState('');
-    const [editPriority, setEditPriority] = useState('');
 
 
     const showEditModal = (id, title, description, status, priority) => {
@@ -99,10 +106,7 @@ export function HomePage() {
         closeEditModal();
     };
 
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [status, setStatus] = useState('Pending');
-    const [priority, setPriority] = useState('Low');
+
 
 
     const toggleAddNoteButton = async () => {
