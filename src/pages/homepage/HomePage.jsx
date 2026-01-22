@@ -357,8 +357,12 @@ export function HomePage() {
                 <div id="notesList">
                     {
                         getFilteredNotes().map((note) => {
+                            const priorityClass = note.priority === 'High' ? 'priority-high' :
+                                note.priority === 'Medium' ? 'priority-medium' :
+                                    'priority-low';
+
                             return (
-                                <div key={note.id} className="note-card">
+                                <div key={note.id} className={`note-card ${priorityClass}`}>
                                     <h3>{note.title} ({note.status}, {note.priority})</h3>
                                     <p>{note.description}</p>
                                     <p>Created: {new Date(note.created_at).toLocaleString()}</p>
