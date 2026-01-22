@@ -22,6 +22,7 @@ export function HomePage() {
 
     const [filterStatus, setFilterStatus] = useState('');
     const [filterPriority, setFilterPriority] = useState('');
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const token = localStorage.getItem("access_token");
     console.log(localStorage.getItem("access_token"));
@@ -166,6 +167,14 @@ export function HomePage() {
         setFilterPriority('');
     };
 
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
+
+    const closeMobileMenu = () => {
+        setIsMobileMenuOpen(false);
+    };
+
     return (
         <>
             <title>Todo List</title>
@@ -181,8 +190,21 @@ export function HomePage() {
                 >Logout</button>
             </header>
 
+            {/* Mobile Menu Toggle Button */}
+            <button className="menu-toggle" onClick={toggleMobileMenu}>
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            {/* Mobile Overlay */}
+            <div
+                className={`mobile-overlay ${isMobileMenuOpen ? 'active' : ''}`}
+                onClick={closeMobileMenu}
+            ></div>
+
             {/* Sidebar */}
-            <div className="sidebar">
+            <div className={`sidebar ${isMobileMenuOpen ? 'active' : ''}`}>
                 <h3>Filters</h3>
 
                 {/* Status Filter */}
@@ -194,7 +216,7 @@ export function HomePage() {
                             id="status-all"
                             name="status"
                             checked={filterStatus === ''}
-                            onChange={() => setFilterStatus('')}
+                            onChange={() => { setFilterStatus(''); closeMobileMenu(); }}
                         />
                         <label htmlFor="status-all">All</label>
                     </div>
@@ -204,7 +226,7 @@ export function HomePage() {
                             id="status-pending"
                             name="status"
                             checked={filterStatus === 'Pending'}
-                            onChange={() => setFilterStatus('Pending')}
+                            onChange={() => { setFilterStatus('Pending'); closeMobileMenu(); }}
                         />
                         <label htmlFor="status-pending">Pending</label>
                     </div>
@@ -214,7 +236,7 @@ export function HomePage() {
                             id="status-progress"
                             name="status"
                             checked={filterStatus === 'InProgress'}
-                            onChange={() => setFilterStatus('InProgress')}
+                            onChange={() => { setFilterStatus('InProgress'); closeMobileMenu(); }}
                         />
                         <label htmlFor="status-progress">In Progress</label>
                     </div>
@@ -224,7 +246,7 @@ export function HomePage() {
                             id="status-completed"
                             name="status"
                             checked={filterStatus === 'Completed'}
-                            onChange={() => setFilterStatus('Completed')}
+                            onChange={() => { setFilterStatus('Completed'); closeMobileMenu(); }}
                         />
                         <label htmlFor="status-completed">Completed</label>
                     </div>
@@ -234,7 +256,7 @@ export function HomePage() {
                             id="status-cancelled"
                             name="status"
                             checked={filterStatus === 'Cancelled'}
-                            onChange={() => setFilterStatus('Cancelled')}
+                            onChange={() => { setFilterStatus('Cancelled'); closeMobileMenu(); }}
                         />
                         <label htmlFor="status-cancelled">Cancelled</label>
                     </div>
@@ -249,7 +271,7 @@ export function HomePage() {
                             id="priority-none"
                             name="priority"
                             checked={filterPriority === ''}
-                            onChange={() => setFilterPriority('')}
+                            onChange={() => { setFilterPriority(''); closeMobileMenu(); }}
                         />
                         <label htmlFor="priority-none">None</label>
                     </div>
@@ -259,7 +281,7 @@ export function HomePage() {
                             id="priority-high-low"
                             name="priority"
                             checked={filterPriority === 'High-to-Low'}
-                            onChange={() => setFilterPriority('High-to-Low')}
+                            onChange={() => { setFilterPriority('High-to-Low'); closeMobileMenu(); }}
                         />
                         <label htmlFor="priority-high-low">High to Low</label>
                     </div>
@@ -269,13 +291,13 @@ export function HomePage() {
                             id="priority-low-high"
                             name="priority"
                             checked={filterPriority === 'Low-to-High'}
-                            onChange={() => setFilterPriority('Low-to-High')}
+                            onChange={() => { setFilterPriority('Low-to-High'); closeMobileMenu(); }}
                         />
                         <label htmlFor="priority-low-high">Low to High</label>
                     </div>
                 </div>
 
-                <button className="clear-filters-btn" onClick={clearFilters}>
+                <button className="clear-filters-btn" onClick={() => { clearFilters(); closeMobileMenu(); }}>
                     Clear Filters
                 </button>
             </div>

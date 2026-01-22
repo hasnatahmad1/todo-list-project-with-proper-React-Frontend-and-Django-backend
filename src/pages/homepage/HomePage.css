@@ -343,3 +343,186 @@ select:focus {
 hr {
     display: none;
 }
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+
+    /* Sidebar becomes full width overlay on mobile */
+    .sidebar {
+        position: fixed;
+        left: -280px;
+        top: 60px;
+        width: 280px;
+        height: calc(100vh - 60px);
+        background-color: #ffffff;
+        padding: 25px 18px;
+        overflow-y: auto;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        transition: left 0.3s ease;
+        z-index: 200;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    /* Main content takes full width on mobile */
+    .main-content {
+        margin-left: 0;
+        margin-top: 60px;
+        padding: 20px 15px;
+        width: 100%;
+        min-height: calc(100vh - 60px);
+    }
+
+    /* Header adjustments */
+    header {
+        padding: 0 15px;
+    }
+
+    #userEmail {
+        font-size: 12px;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #logoutBtn {
+        padding: 6px 15px;
+        font-size: 13px;
+    }
+
+    /* Page title */
+    h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    /* Input section */
+    .input-section {
+        padding: 20px 15px;
+    }
+
+    input[type="text"],
+    select {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    #addNote {
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    /* Note cards */
+    .note-card {
+        padding: 15px;
+    }
+
+    .note-card h3 {
+        font-size: 18px;
+    }
+
+    .note-card p {
+        font-size: 13px;
+    }
+
+    .note-card button {
+        padding: 7px 14px;
+        font-size: 13px;
+        margin-top: 10px;
+    }
+
+    /* Edit Modal */
+    #editModal {
+        width: 90%;
+        padding: 20px;
+    }
+
+    #editModal h3 {
+        font-size: 20px;
+    }
+
+    /* Hamburger menu button */
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 300;
+        background: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 12px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .menu-toggle span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background-color: #667eea;
+        margin: 4px 0;
+        transition: 0.3s;
+    }
+
+    /* Mobile overlay */
+    .mobile-overlay {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 60px);
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 150;
+    }
+
+    .mobile-overlay.active {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 480px) {
+
+    /* Extra small devices */
+    h2 {
+        font-size: 20px;
+    }
+
+    .input-section {
+        padding: 15px 10px;
+    }
+
+    .note-card {
+        padding: 12px;
+    }
+
+    .note-card h3 {
+        font-size: 16px;
+        word-break: break-word;
+    }
+
+    .note-card button {
+        width: 100%;
+        margin-right: 0;
+        margin-top: 8px;
+    }
+
+    #editModal {
+        padding: 15px;
+    }
+}
+
+/* Hide menu toggle on desktop */
+@media screen and (min-width: 769px) {
+    .menu-toggle {
+        display: none;
+    }
+
+    .mobile-overlay {
+        display: none !important;
+    }
+}
