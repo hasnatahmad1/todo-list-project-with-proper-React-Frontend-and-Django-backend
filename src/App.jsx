@@ -7,7 +7,7 @@ import { HomePage } from './pages/homepage/HomePage';
 function App() {
   return (
     <Routes>
-      <Route path='/login' element={<LoginPage />} />
+      <Route path='/' element={<LoginPage />} />
       <Route path='/register' element={<RegisterPage />} />
       <Route path='/home' element={<HomePage />} />
     </Routes>
