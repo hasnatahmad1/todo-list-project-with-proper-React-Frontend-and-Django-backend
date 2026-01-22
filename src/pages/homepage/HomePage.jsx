@@ -43,8 +43,6 @@ export function HomePage() {
         navigateToLoginPage('/');
     };
 
-
-
     const fetchNotesList = async () => {
         const response = await axios.get('http://127.0.0.1:8000/notes/', {
             headers: {
@@ -55,13 +53,11 @@ export function HomePage() {
         setNotesList(response.data);
     };
 
-
     useEffect(() => {
         fetchNotesList();
     }, []);
 
     console.log(notesList);
-
 
     const deleteNote = async (id) => {
         await axios.delete(`http://127.0.0.1:8000/notes/${id}/`, {
@@ -73,9 +69,6 @@ export function HomePage() {
 
         fetchNotesList();
     };
-
-
-
 
     const showEditModal = (id, title, description, status, priority) => {
         setEditId(id);
@@ -108,9 +101,6 @@ export function HomePage() {
         fetchNotesList();
         closeEditModal();
     };
-
-
-
 
     const toggleAddNoteButton = async () => {
         console.log(title, description, status, priority);
@@ -171,11 +161,16 @@ export function HomePage() {
         return filtered;
     };
 
+    const clearFilters = () => {
+        setFilterStatus('');
+        setFilterPriority('');
+    };
+
     return (
         <>
             <title>Todo List</title>
 
-
+            {/* Header */}
             <header>
                 <span id="userEmail">
                     {userEmail}
@@ -186,120 +181,235 @@ export function HomePage() {
                 >Logout</button>
             </header>
 
-            <h2>My To-Do List</h2>
+            {/* Sidebar */}
+            <div className="sidebar">
+                <h3>Filters</h3>
 
-            <input
-                type="text"
-                id="title"
-                placeholder="Title"
-                value={title}
-                onChange={(event) => {
-                    setTitle(event.target.value);
-                }}
-            />
-            <input type="text" id="description" placeholder="Description" value={description} onChange={(event) => {
-                setDescription(event.target.value);
-            }} />
-            <select id="status" value={status} onChange={(event) => {
-                setStatus(event.target.value);
-            }}>
-                <option>Pending</option>
-                <option>Completed</option>
-                <option>Cancelled</option>
-                <option>InProgress</option>
-            </select>
-            <select value={priority} id="priority" onChange={(event) => {
-                setPriority(event.target.value);
-            }}>
-                <option>Low</option>
-                <option>Medium</option>
-                <option>High</option>
-            </select>
-            <button
-                id="addNote"
-                onClick={toggleAddNoteButton}
-            >Add Note</button>
+                {/* Status Filter */}
+                <div className="filter-section">
+                    <h4>Status</h4>
+                    <div className="filter-option">
+                        <input
+                            type="radio"
+                            id="status-all"
+                            name="status"
+                            checked={filterStatus === ''}
+                            onChange={() => setFilterStatus('')}
+                        />
+                        <label htmlFor="status-all">All</label>
+                    </div>
+                    <div className="filter-option">
+                        <input
+                            type="radio"
+                            id="status-pending"
+                            name="status"
+                            checked={filterStatus === 'Pending'}
+                            onChange={() => setFilterStatus('Pending')}
+                        />
+                        <label htmlFor="status-pending">Pending</label>
+                    </div>
+                    <div className="filter-option">
+                        <input
+                            type="radio"
+                            id="status-progress"
+                            name="status"
+                            checked={filterStatus === 'InProgress'}
+                            onChange={() => setFilterStatus('InProgress')}
+                        />
+                        <label htmlFor="status-progress">In Progress</label>
+                    </div>
+                    <div className="filter-option">
+                        <input
+                            type="radio"
+                            id="status-completed"
+                            name="status"
+                            checked={filterStatus === 'Completed'}
+                            onChange={() => setFilterStatus('Completed')}
+                        />
+                        <label htmlFor="status-completed">Completed</label>
+                    </div>
+                    <div className="filter-option">
+                        <input
+                            type="radio"
+                            id="status-cancelled"
+                            name="status"
+                            checked={filterStatus === 'Cancelled'}
+                            onChange={() => setFilterStatus('Cancelled')}
+                        />
+                        <label htmlFor="status-cancelled">Cancelled</label>
+                    </div>
+                </div>
 
-            <hr />
+                {/* Priority Sort */}
+                <div className="filter-section">
+                    <h4>Sort by Priority</h4>
+                    <div className="filter-option">
+                        <input
+                            type="radio"
+                            id="priority-none"
+                            name="priority"
+                            checked={filterPriority === ''}
+                            onChange={() => setFilterPriority('')}
+                        />
+                        <label htmlFor="priority-none">None</label>
+                    </div>
+                    <div className="filter-option">
+                        <input
+                            type="radio"
+                            id="priority-high-low"
+                            name="priority"
+                            checked={filterPriority === 'High-to-Low'}
+                            onChange={() => setFilterPriority('High-to-Low')}
+                        />
+                        <label htmlFor="priority-high-low">High to Low</label>
+                    </div>
+                    <div className="filter-option">
+                        <input
+                            type="radio"
+                            id="priority-low-high"
+                            name="priority"
+                            checked={filterPriority === 'Low-to-High'}
+                            onChange={() => setFilterPriority('Low-to-High')}
+                        />
+                        <label htmlFor="priority-low-high">Low to High</label>
+                    </div>
+                </div>
 
-            <div style={{ marginBottom: '20px' }}>
-                <h3>Filter Notes</h3>
-                <select value={filterStatus} onChange={(event) => {
-                    setFilterStatus(event.target.value);
-                }}>
-                    <option value="">All Status</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Cancelled">Cancelled</option>
-                    <option value="InProgress">InProgress</option>
-                </select>
-
-                <select value={filterPriority} onChange={(event) => {
-                    setFilterPriority(event.target.value);
-                }} style={{ marginLeft: '10px' }}>
-                    <option value="">No Sort</option>
-                    <option value="Low-to-High">Low to High</option>
-                    <option value="High-to-Low">High to Low</option>
-                </select>
+                <button className="clear-filters-btn" onClick={clearFilters}>
+                    Clear Filters
+                </button>
             </div>
 
-            <div id="notesList">
-                {
-                    getFilteredNotes().map((note) => {
-                        return (
-                            <div key={note.id} className="note-card">
-                                <h3>{note.title} ({note.status}, {note.priority})</h3>
-                                <p>{note.description}</p>
-                                <p>Created: {new Date(note.created_at).toLocaleString()}</p>
-                                <p>Last Updated: {new Date(note.updated_at).toLocaleString()}</p>
-                                <button
-                                    className="delete-btn"
-                                    onClick={() => { deleteNote(note.id) }}
-                                >Delete</button>
-                                <button
-                                    className="edit-btn"
-                                    onClick={() => { showEditModal(note.id, note.title, note.description, note.status, note.priority) }}
-                                >Edit</button>
-                            </div>
-                        );
-                    })
-                }
+            {/* Main Content */}
+            <div className="main-content">
+                <h2>My To-Do List</h2>
+
+                <div className="input-section">
+                    <input
+                        type="text"
+                        id="title"
+                        placeholder="Title"
+                        value={title}
+                        onChange={(event) => {
+                            setTitle(event.target.value);
+                        }}
+                    />
+                    <input
+                        type="text"
+                        id="description"
+                        placeholder="Description"
+                        value={description}
+                        onChange={(event) => {
+                            setDescription(event.target.value);
+                        }}
+                    />
+                    <select
+                        id="status"
+                        value={status}
+                        onChange={(event) => {
+                            setStatus(event.target.value);
+                        }}
+                    >
+                        <option>Pending</option>
+                        <option>Completed</option>
+                        <option>Cancelled</option>
+                        <option>InProgress</option>
+                    </select>
+                    <select
+                        value={priority}
+                        id="priority"
+                        onChange={(event) => {
+                            setPriority(event.target.value);
+                        }}
+                    >
+                        <option>Low</option>
+                        <option>Medium</option>
+                        <option>High</option>
+                    </select>
+                    <button
+                        id="addNote"
+                        onClick={toggleAddNoteButton}
+                    >Add Note</button>
+                </div>
+
+                <div id="notesList">
+                    {
+                        getFilteredNotes().map((note) => {
+                            return (
+                                <div key={note.id} className="note-card">
+                                    <h3>{note.title} ({note.status}, {note.priority})</h3>
+                                    <p>{note.description}</p>
+                                    <p>Created: {new Date(note.created_at).toLocaleString()}</p>
+                                    <p>Last Updated: {new Date(note.updated_at).toLocaleString()}</p>
+                                    <button
+                                        className="delete-btn"
+                                        onClick={() => { deleteNote(note.id) }}
+                                    >Delete</button>
+                                    <button
+                                        className="edit-btn"
+                                        onClick={() => { showEditModal(note.id, note.title, note.description, note.status, note.priority) }}
+                                    >Edit</button>
+                                </div>
+                            );
+                        })
+                    }
+                </div>
             </div>
 
-
+            {/* Modal Overlay */}
             <div id="modalOverlay" style={{
                 display: isModalOverlay ? 'block' : 'none'
             }}></div>
 
-
+            {/* Edit Modal */}
             <div id="editModal" style={{
                 display: isEditModal ? 'block' : 'none'
             }}>
                 <h3>Edit Note</h3>
-                <input type="text" id="editTitle" placeholder="Title" value={editTitle} onChange={(event) => {
-                    setEditTitle(event.target.value);
-                }} />
-                <input type="text" id="editDescription" placeholder="Description" value={editDescription} onChange={(event) => {
-                    setEditDescription(event.target.value);
-                }} />
-                <select id="editStatus" value={editStatus} onChange={(event) => {
-                    setEditStatus(event.target.value);
-                }}>
+                <input
+                    type="text"
+                    id="editTitle"
+                    placeholder="Title"
+                    value={editTitle}
+                    onChange={(event) => {
+                        setEditTitle(event.target.value);
+                    }}
+                />
+                <input
+                    type="text"
+                    id="editDescription"
+                    placeholder="Description"
+                    value={editDescription}
+                    onChange={(event) => {
+                        setEditDescription(event.target.value);
+                    }}
+                />
+                <select
+                    id="editStatus"
+                    value={editStatus}
+                    onChange={(event) => {
+                        setEditStatus(event.target.value);
+                    }}
+                >
                     <option>Pending</option>
                     <option>Completed</option>
                     <option>Cancelled</option>
                     <option>InProgress</option>
                 </select>
-                <select id="editPriority" value={editPriority} onChange={(event) => {
-                    setEditPriority(event.target.value);
-                }}>
+                <select
+                    id="editPriority"
+                    value={editPriority}
+                    onChange={(event) => {
+                        setEditPriority(event.target.value);
+                    }}
+                >
                     <option>Low</option>
                     <option>Medium</option>
                     <option>High</option>
                 </select>
                 <button id="saveEdit" onClick={toggleSaveEditButton}>Save</button>
                 <button onClick={closeEditModal}>Cancel</button>
-            </div >
+            </div>
         </>
     );
 }
