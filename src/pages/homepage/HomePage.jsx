@@ -20,6 +20,9 @@ export function HomePage() {
     const [editStatus, setEditStatus] = useState('');
     const [editPriority, setEditPriority] = useState('');
 
+    const [filterStatus, setFilterStatus] = useState('');
+    const [filterPriority, setFilterPriority] = useState('');
+
     const token = localStorage.getItem("access_token");
     console.log(localStorage.getItem("access_token"));
     const userEmail = JSON.parse(localStorage.getItem("user_email"));
@@ -144,6 +147,30 @@ export function HomePage() {
         }
     };
 
+    const getFilteredNotes = () => {
+        let filtered = notesList;
+
+        // Status filter
+        if (filterStatus) {
+            filtered = filtered.filter(note => note.status === filterStatus);
+        }
+
+        // Priority sort
+        if (filterPriority === 'Low-to-High') {
+            filtered = filtered.sort((a, b) => {
+                const priorityOrder = { 'Low': 1, 'Medium': 2, 'High': 3 };
+                return priorityOrder[a.priority] - priorityOrder[b.priority];
+            });
+        } else if (filterPriority === 'High-to-Low') {
+            filtered = filtered.sort((a, b) => {
+                const priorityOrder = { 'Low': 1, 'Medium': 2, 'High': 3 };
+                return priorityOrder[b.priority] - priorityOrder[a.priority];
+            });
+        }
+
+        return filtered;
+    };
+
     return (
         <>
             <title>Todo List</title>
@@ -195,10 +222,30 @@ export function HomePage() {
 
             <hr />
 
+            <div style={{ marginBottom: '20px' }}>
+                <h3>Filter Notes</h3>
+                <select value={filterStatus} onChange={(event) => {
+                    setFilterStatus(event.target.value);
+                }}>
+                    <option value="">All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                    <option value="InProgress">InProgress</option>
+                </select>
+
+                <select value={filterPriority} onChange={(event) => {
+                    setFilterPriority(event.target.value);
+                }} style={{ marginLeft: '10px' }}>
+                    <option value="">No Sort</option>
+                    <option value="Low-to-High">Low to High</option>
+                    <option value="High-to-Low">High to Low</option>
+                </select>
+            </div>
 
             <div id="notesList">
                 {
-                    notesList.map((note) => {
+                    getFilteredNotes().map((note) => {
                         return (
                             <div key={note.id} className="note-card">
                                 <h3>{note.title} ({note.status}, {note.priority})</h3>
