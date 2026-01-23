@@ -19,12 +19,13 @@ export function LoginPage() {
 
     const toggleLoginButton = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:8000/token/', {
+            const response = await axios.post('https://yousef-frizzliest-myah.ngrok-free.dev/token/', {
                 email: email,
                 password: password,
             }, {
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    'ngrok-skip-browser-warning': 'True',
                 }
             });
             if (response.data.access) {

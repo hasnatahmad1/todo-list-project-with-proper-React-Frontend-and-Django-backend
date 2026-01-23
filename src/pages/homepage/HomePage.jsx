@@ -45,13 +45,16 @@ export function HomePage() {
     };
 
     const fetchNotesList = async () => {
-        const response = await axios.get('http://127.0.0.1:8000/notes/', {
+        const response = await axios.get('https://yousef-frizzliest-myah.ngrok-free.dev/notes/', {
             headers: {
                 "Content-Type": "application/json",
+                'ngrok-skip-browser-warning': 'True',
                 "Authorization": `Bearer ${token}`
             }
         });
-        setNotesList(response.data);
+        // Handle both array and object responses
+        const notesData = Array.isArray(response.data) ? response.data : (response.data.results || response.data.notes || []);
+        setNotesList(notesData);
     };
 
     useEffect(() => {
@@ -61,9 +64,10 @@ export function HomePage() {
     console.log(notesList);
 
     const deleteNote = async (id) => {
-        await axios.delete(`http://127.0.0.1:8000/notes/${id}/`, {
+        await axios.delete(`https://yousef-frizzliest-myah.ngrok-free.dev/notes/${id}/`, {
             headers: {
                 "Content-Type": "application/json",
+                'ngrok-skip-browser-warning': 'True',
                 "Authorization": `Bearer ${token}`
             },
         });
@@ -88,13 +92,14 @@ export function HomePage() {
     }
 
     const toggleSaveEditButton = async () => {
-        await axios.put(`http://127.0.0.1:8000/notes/${editId}/`, {
+        await axios.put(`https://yousef-frizzliest-myah.ngrok-free.dev/notes/${editId}/`, {
             title: editTitle,
             description: editDescription,
             status: editStatus,
             priority: editPriority
         }, {
             headers: {
+                'ngrok-skip-browser-warning': 'True',
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             }
@@ -118,13 +123,14 @@ export function HomePage() {
             return;
         }
         else {
-            await axios.post("http://127.0.0.1:8000/notes/", {
+            await axios.post("https://yousef-frizzliest-myah.ngrok-free.dev/notes/", {
                 title: title,
                 description,
                 status,
                 priority
             }, {
                 headers: {
+                    'ngrok-skip-browser-warning': 'True',
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
                 }
@@ -139,7 +145,7 @@ export function HomePage() {
     };
 
     const getFilteredNotes = () => {
-        let filtered = notesList;
+        let filtered = Array.isArray(notesList) ? notesList : [];
 
         // Status filter
         if (filterStatus) {
