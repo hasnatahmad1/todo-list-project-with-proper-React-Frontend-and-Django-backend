@@ -8,6 +8,7 @@ export function RegisterPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false); // Loading state
 
     const navigateToLogin = useNavigate();
 
@@ -67,6 +68,7 @@ export function RegisterPage() {
         }
         // If all validations pass, send request to backend
         else {
+            setIsLoading(true); // Start loading
             try {
                 const response = await axios.post('https://yousef-frizzliest-myah.ngrok-free.dev/register/', {
                     email: email,
@@ -89,6 +91,8 @@ export function RegisterPage() {
                     alert('Network error. Please check your connection and try again.');
                 }
                 console.error('Registration error:', error);
+            } finally {
+                setIsLoading(false); // Stop loading
             }
         }
     };
@@ -106,6 +110,7 @@ export function RegisterPage() {
                 onChange={getEmail}
                 type="email"
                 placeholder="example@email.com"
+                disabled={isLoading}
                 style={{
                     width: '100%',
                     padding: '12px 15px',
@@ -123,6 +128,7 @@ export function RegisterPage() {
                 onChange={getPassword}
                 type="password"
                 placeholder="At least 6 characters"
+                disabled={isLoading}
                 style={{
                     width: '100%',
                     padding: '12px 15px',
@@ -140,6 +146,7 @@ export function RegisterPage() {
                 onChange={getConfirmPassword}
                 type="password"
                 placeholder="Re-enter your password"
+                disabled={isLoading}
                 style={{
                     width: '100%',
                     padding: '12px 15px',
@@ -154,8 +161,16 @@ export function RegisterPage() {
             <button
                 className="js-register-button"
                 onClick={toggleRegisterButton}
+                disabled={isLoading}
             >
-                Register
+                {isLoading ? (
+                    <>
+                        <span className="spinner"></span>
+                        <span>Registering...</span>
+                    </>
+                ) : (
+                    'Register'
+                )}
             </button>
 
             <p>Already have an account <Link to="/">Login</Link></p>
