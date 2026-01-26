@@ -23,25 +23,75 @@ export function RegisterPage() {
         setConfirmPassword(event.target.value);
     }
 
-    // console.log(email, password, confirmPassword);
+    // Email validation function
+    const isValidEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
 
     const toggleRegisterButton = async () => {
-        const response = await axios.post('https://yousef-frizzliest-myah.ngrok-free.dev/register/', {
-            email: email,
-            password: password,
-            password2: confirmPassword
-        }, {
-            headers: {
-                "Content-Type": "application/json",
-                'ngrok-skip-browser-warning': 'True',
+        // Check if all fields are empty
+        if ((email === '') && (password === '') && (confirmPassword === '')) {
+            alert('All the fields are empty. Please Fill the Registration Form');
+            return
+        }
+        // Check if email is empty
+        else if (email === '') {
+            alert('Email field is empty.');
+            return
+        }
+        // Validate email format
+        else if (!isValidEmail(email)) {
+            alert('Please enter a valid email address (e.g., example@email.com)');
+            return
+        }
+        // Check if password is empty
+        else if (password === '') {
+            alert('Password field is empty.');
+            return
+        }
+        // Check if password meets minimum requirements (optional)
+        else if (password.length < 6) {
+            alert('Password must be at least 6 characters long.');
+            return
+        }
+        // Check if confirm password is empty
+        else if (confirmPassword === '') {
+            alert('Confirm Password field is empty.');
+            return
+        }
+        // Check if passwords match
+        else if (password !== confirmPassword) {
+            alert('Password and Confirm Password do not match.');
+            return;
+        }
+        // If all validations pass, send request to backend
+        else {
+            try {
+                const response = await axios.post('https://yousef-frizzliest-myah.ngrok-free.dev/register/', {
+                    email: email,
+                    password: password,
+                    password2: confirmPassword
+                }, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        'ngrok-skip-browser-warning': 'True',
+                    }
+                });
+                alert("Registration Successful ✅");
+                console.log(response.data);
+                navigateToLogin('/');
+            } catch (error) {
+                // Handle any errors from the backend
+                if (error.response) {
+                    alert(`Registration failed: ${error.response.data.message || 'Please try again'}`);
+                } else {
+                    alert('Network error. Please check your connection and try again.');
+                }
+                console.error('Registration error:', error);
             }
-        });
-        alert("Registration Successful ✅");
-        console.log(response.data);
-        navigateToLogin('/');
+        }
     };
-
-
 
     return (
         <>
@@ -54,7 +104,8 @@ export function RegisterPage() {
             <input
                 className="js-email"
                 onChange={getEmail}
-                type="Email"
+                type="email"
+                placeholder="example@email.com"
                 style={{
                     width: '100%',
                     padding: '12px 15px',
@@ -71,6 +122,7 @@ export function RegisterPage() {
                 className="js-password"
                 onChange={getPassword}
                 type="password"
+                placeholder="At least 6 characters"
                 style={{
                     width: '100%',
                     padding: '12px 15px',
@@ -87,6 +139,7 @@ export function RegisterPage() {
                 className="js-confirm-password"
                 onChange={getConfirmPassword}
                 type="password"
+                placeholder="Re-enter your password"
                 style={{
                     width: '100%',
                     padding: '12px 15px',
@@ -101,7 +154,6 @@ export function RegisterPage() {
             <button
                 className="js-register-button"
                 onClick={toggleRegisterButton}
-
             >
                 Register
             </button>
