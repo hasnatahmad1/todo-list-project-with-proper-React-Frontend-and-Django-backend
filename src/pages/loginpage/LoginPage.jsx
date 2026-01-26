@@ -6,6 +6,7 @@ import { useState } from 'react';
 export function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false); // Loading state
 
     const navigateToHomePage = useNavigate();
 
@@ -18,6 +19,7 @@ export function LoginPage() {
     };
 
     const toggleLoginButton = async () => {
+        setIsLoading(true); // Start loading
         try {
             const response = await axios.post('https://yousef-frizzliest-myah.ngrok-free.dev/token/', {
                 email: email,
@@ -43,6 +45,8 @@ export function LoginPage() {
         } catch (error) {
             console.error(error);
             alert("Login failed ❌");
+        } finally {
+            setIsLoading(false); // Stop loading
         }
     }
 
@@ -58,6 +62,7 @@ export function LoginPage() {
                 className="js-email"
                 type="email"
                 onChange={toggleEmailText}
+                disabled={isLoading}
                 style={{
                     width: '100%',
                     padding: '12px 15px',
@@ -72,15 +77,33 @@ export function LoginPage() {
             <p>Password</p>
             <input
                 className="js-password"
-                type="text"
+                type="password"
                 onChange={togglePasswordText}
+                disabled={isLoading}
+                style={{
+                    width: '100%',
+                    padding: '12px 15px',
+                    margin: '8px 0',
+                    border: '2px solid #e0e0e0',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    transition: 'all .3s ease'
+                }}
             /><br /><br />
 
             <button
                 className="js-login-button"
                 onClick={toggleLoginButton}
+                disabled={isLoading}
             >
-                Login
+                {isLoading ? (
+                    <>
+                        <span className="spinner"></span>
+                        <span>Logging in...</span>
+                    </>
+                ) : (
+                    'Login'
+                )}
             </button>
 
             <p>Don&apos;t have an account <Link to="/register">Create Account</Link></p>
