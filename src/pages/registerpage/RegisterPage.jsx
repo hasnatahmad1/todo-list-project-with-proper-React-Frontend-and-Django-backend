@@ -55,6 +55,15 @@ export function RegisterPage() {
                 className="js-email"
                 onChange={getEmail}
                 type="Email"
+                style={{
+                    width: '100%',
+                    padding: '12px 15px',
+                    margin: '8px 0',
+                    border: '2px solid #e0e0e0',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    transition: 'all .3s ease'
+                }}
             />
 
             <p>Password:</p>
@@ -62,6 +71,15 @@ export function RegisterPage() {
                 className="js-password"
                 onChange={getPassword}
                 type="password"
+                style={{
+                    width: '100%',
+                    padding: '12px 15px',
+                    margin: '8px 0',
+                    border: '2px solid #e0e0e0',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    transition: 'all .3s ease'
+                }}
             />
 
             <p>Confirm Password:</p>
@@ -69,11 +87,21 @@ export function RegisterPage() {
                 className="js-confirm-password"
                 onChange={getConfirmPassword}
                 type="password"
+                style={{
+                    width: '100%',
+                    padding: '12px 15px',
+                    margin: '8px 0',
+                    border: '2px solid #e0e0e0',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    transition: 'all .3s ease'
+                }}
             /><br /><br />
 
             <button
                 className="js-register-button"
                 onClick={toggleRegisterButton}
+
             >
                 Register
             </button>
