@@ -24,9 +24,7 @@ input {
     outline: none;
 }
 
-input:focus {
-    border-color: #007bff;
-}
+
 
 /* login button */
 .js-login-button {
@@ -48,4 +46,10 @@ input:focus {
 /* Small spacing fix */
 br {
     line-height: 20px;
+}
+
+.js-email:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 123, 234, 0.1);
 }

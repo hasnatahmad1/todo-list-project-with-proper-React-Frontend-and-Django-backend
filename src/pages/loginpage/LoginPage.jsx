@@ -58,6 +58,15 @@ export function LoginPage() {
                 className="js-email"
                 type="email"
                 onChange={toggleEmailText}
+                style={{
+                    width: '100%',
+                    padding: '12px 15px',
+                    margin: '8px 0',
+                    border: '2px solid #e0e0e0',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    transition: 'all .3s ease'
+                }}
             />
 
             <p>Password</p>
